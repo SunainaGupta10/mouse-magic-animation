@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Festive Falling Star Effect</title>
+  <style>
+    :root {
+      --glow-colors: rgba(255, 215, 0, 0.8), rgba(239, 42, 201, 0.8), rgba(173, 216, 230, 0.8);
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      height: 100vh;
+      background: linear-gradient(-45deg, #000000, #060f09, #000000, #a18cd1);
+      background-size: 400% 400%;
+      animation: gradientShift 10s infinite;
+      cursor: none; /* Hide default cursor */
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .star {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: fall-and-fade 1.5s ease-out forwards;
+      box-shadow: 0 0 15px, 0 0 30px;
+    }
+
+    @keyframes fall-and-fade {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(150px) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    .twinkling-stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: transparent;
+    }
+
+    .twinkling-stars div {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background-color: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="twinkling-stars"></div>
+
+  <script>
+    const createStar = (x, y) => {
+      const star = document.createElement("div");
+      star.className = "star";
+
+      // Set random glowing colors
+      const colors = ["#FFD700", "#EF2AC9", "#ADD8E6"];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      star.style.backgroundColor = color;
+      star.style.boxShadow = `0 0 15px ${color}, 0 0 30px ${color}`;
+
+      // Position the star at cursor
+      star.style.left = `${x}px`;
+      star.style.top = `${y}px`;
+
+      // Append to the document
+      document.body.appendChild(star);
+
+      // Remove after animation
+      setTimeout(() => star.remove(), 1500);
+    };
+
+    const handleMouseMove = (event) => {
+      const { clientX, clientY } = event;
+      createStar(clientX, clientY);
+    };
+
+    // Add stars randomly across the background for twinkling effect
+    const createTwinklingStars = () => {
+      const container = document.querySelector(".twinkling-stars");
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        star.style.left = `${x}px`;
+        star.style.top = `${y}px`;
+        star.style.animationDuration = `${Math.random() * 2 + 1}s`;
+        container.appendChild(star);
+      }
+    };
+
+    // Mouse and touch event listeners
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", (e) => {
+      const touch = e.touches[0];
+      handleMouseMove({ clientX: touch.clientX, clientY: touch.clientY });
+    });
+
+    createTwinklingStars();
+  </script>
+</body>
+</html>

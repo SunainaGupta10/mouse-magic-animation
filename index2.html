@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="title" content="Magical Christmas Animation | Falling Stars & Snow">
+  <meta name="description" content="Celebrate Christmas with a magical animation featuring falling stars, glowing lights, and a snowy festive background. Perfect for holiday projects!">
+  <meta name="keywords" content="Christmas Animation, Falling Stars, Snowfall, Festive Background, Holiday Theme, JavaScript, CSS Effects">
+  <meta name="author" content="FrontendFlickOfficial">
+  <title>Christmas Night Animation</title>
+  <style>
+    :root {
+      --star-colors: #ffffff, #ffd700, #ff69b4, #87ceeb;
+      --background-gradient: radial-gradient(circle, #12232e, #000814);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--background-gradient);
+    }
+
+    .star {
+      position: absolute;
+      font-size: 0.8rem;
+      color: white;
+      pointer-events: none;
+      animation: fall 3s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    .snow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://www.transparenttextures.com/patterns/snow.png');
+      opacity: 0.1;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="snow"></div>
+
+  <script>
+    const colors = ["#ffffff", "#ffd700", "#ff69b4", "#87ceeb"];
+
+    // Create Falling Stars
+    function createFallingStar() {
+      const star = document.createElement("div");
+      star.classList.add("star");
+
+      // Randomize star properties
+      star.style.left = `${Math.random() * window.innerWidth}px`;
+      star.style.top = `-${Math.random() * 50}px`;
+      star.style.fontSize = `${Math.random() * 2 + 1}rem`;
+      star.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+      document.body.appendChild(star);
+
+      // Remove star after animation
+      setTimeout(() => {
+        document.body.removeChild(star);
+      }, 3000);
+    }
+
+    // Create stars at intervals
+    setInterval(createFallingStar, 200);
+
+    // Add glowing stars on mouse move
+    document.addEventListener("mousemove", (e) => {
+      const star = document.createElement("span");
+      star.classList.add("star");
+      star.style.left = `${e.clientX}px`;
+      star.style.top = `${e.clientY}px`;
+      star.style.fontSize = "1rem";
+      star.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+      document.body.appendChild(star);
+
+      setTimeout(() => {
+        document.body.removeChild(star);
+      }, 500);
+    });
+  </script>
+</body>
+</html>
